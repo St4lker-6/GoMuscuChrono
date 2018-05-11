@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GoMuscuChrono.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +10,13 @@ namespace GoMuscuChrono
 {
 	public partial class MainPage : ContentPage
 	{
-		public MainPage()
+        public int Counter { get; set; }
+
+        public MainPage()
 		{
 			InitializeComponent();
-		}
+
+            this.BindingContext = new MainPageViewModel();
+        }
 	}
 }

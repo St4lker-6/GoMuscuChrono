@@ -2,10 +2,60 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:GoMuscuChrono"
-             x:Class="GoMuscuChrono.MainPage">
+             xmlns:Views ="clr-namespace:GoMuscuChrono.View"
+             x:Class="GoMuscuChrono.MainPage" x:Name="mainPage" >
 
-	<Label Text="Welcome to Xamarin.Forms!" 
-           VerticalOptions="Center" 
-           HorizontalOptions="Center" />
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="MyStyle"  TargetType="Views:TimeListView">
+                <Setter Property="IsVisible" Value="False"/>
+
+                <Style.Triggers>
+                    <DataTrigger TargetType="Views:TimeListView" Binding="{Binding DisplayMode}" Value="0">
+                        <Setter Property="IsVisible" Value="True"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <Grid x:Name="myGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--Time selection view-->
+        <Views:TimeListView Grid.Row="1" Style="{x:StaticResource MyStyle}">
+            <Views:TimeListView.Style>
+                <Style TargetType="Views:TimeListView">
+                    <Setter Property="IsVisible" Value="False"/>
+
+                    <Style.Triggers>
+                        <DataTrigger TargetType="Views:TimeListView" Binding="{Binding Path=BindingContext.DisplayMode, Source={x:Reference mainPage}}" Value="0">
+                            <Setter Property="IsVisible" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Views:TimeListView.Style>
+        </Views:TimeListView>
+
+        <!--Timer view-->
+        <Views:ChronoView Grid.Row="1" >
+            <Views:ChronoView.Style>
+                <Style TargetType="Views:ChronoView">
+                    <Setter Property="IsVisible" Value="False"/>
+
+                    <Style.Triggers>
+                        <DataTrigger TargetType="Views:ChronoView" Binding="{Binding Path=BindingContext.DisplayMode, Source={x:Reference mainPage}}" Value="1">
+                            <Setter Property="IsVisible" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Views:ChronoView.Style>
+        </Views:ChronoView>
+
+    </Grid>
 
 </ContentPage>
