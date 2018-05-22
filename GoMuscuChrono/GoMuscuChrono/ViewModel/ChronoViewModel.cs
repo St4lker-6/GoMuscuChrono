@@ -16,34 +16,50 @@ namespace GoMuscuChrono.ViewModel
         public ICommand PauseCommand { get; protected set; }
         public ICommand StopCommand { get; protected set; }
 
-        private Timer _myTimer;
-        private DateTime _counterTime;
-        private readonly IEventAggregator _eventAggregator;
+        private Timer _timer;
+        private DateTime timerValue;
+
+        public event EventHandler TimerStopped;
 
         public string DisplayedCounter
         {
             get
             {
-                return _counterTime.ToString("mm") + " : " + _counterTime.ToString("ss"); 
+                return timerValue.ToString("mm") + " : " + timerValue.ToString("ss");
+            }
+        }
+
+        private bool _timerPaused;
+        public bool TimerPaused
+        {
+
+            get
+            {
+                return _timerPaused;
+            }
+            set
+            {
+                if (_timerPaused != value)
+                {
+                    _timerPaused = value;
+                    this.NotifyPropertyChanged(nameof(TimerPaused));
+                }
             }
         }
 
         public ChronoViewModel()
         {
-            _eventAggregator = ApplicationService.Instance.EventAggregator;
-            _eventAggregator.GetEvent<TimerChangedEvent>().Subscribe(TimerChanged);
-
             this.StartCommand = new Command(this.StartCounter);
             this.PauseCommand = new Command(this.PauseCounter);
             this.StopCommand = new Command(this.StopCounter);
 
-            _myTimer = new Timer();
-            _myTimer.Elapsed += myTimerElapsed;
+            _timer = new Timer();
+            _timer.Elapsed += myTimerElapsed;
         }
 
-        private void TimerChanged(TimerChangedEventArgs obj)
+        public void TimerChanged(TimerChangedEventArgs obj)
         {
-            _counterTime = obj.SelectedTime.CounterTime;
+            timerValue = obj.SelectedTime.CounterTime;
             this.NotifyPropertyChanged(nameof(this.DisplayedCounter));
             this.StartCounter();
 
@@ -51,18 +67,18 @@ namespace GoMuscuChrono.ViewModel
 
         private void StartCounter()
         {
-            _myTimer.Interval = 1000;
-            _myTimer.Start();
+            _timer.Interval = 1000;
+            _timer.Start();
         }
 
         private void myTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            _myTimer.Stop();
+            _timer.Stop();
 
-            _counterTime = _counterTime.AddSeconds(-1);
+            timerValue = timerValue.AddSeconds(-1);
             this.NotifyPropertyChanged(nameof(this.DisplayedCounter));
 
-            if (_counterTime.Minute == 0 && _counterTime.Second == 0)
+            if (timerValue.Minute == 0 && timerValue.Second == 0)
             {
                 this.StopCounter();
             }
@@ -74,13 +90,23 @@ namespace GoMuscuChrono.ViewModel
 
         private void PauseCounter()
         {
-            _myTimer.Stop();
+            if (TimerPaused)
+            {
+                this.TimerPaused = false;
+                _timer.Start();
+            }
+            else
+            {
+                this.TimerPaused = true;
+                _timer.Stop();
+            }
         }
 
         private void StopCounter()
         {
-            _myTimer.Stop();
-            _eventAggregator.GetEvent<TimerElapsedEvent>().Publish(null);
+            _timer.Stop();
+
+            TimerStopped?.Invoke(this, new TimerElapsedEventArgs());
         }
     }
 }

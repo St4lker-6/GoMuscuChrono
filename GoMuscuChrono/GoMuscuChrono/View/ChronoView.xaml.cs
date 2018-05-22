@@ -16,7 +16,6 @@ namespace GoMuscuChrono.View
 		public ChronoView()
 		{
 			InitializeComponent ();
-            this.BindingContext = new ChronoViewModel();
 		}
 	}
 }

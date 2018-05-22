@@ -29,7 +29,6 @@ namespace GoMuscuChrono.ViewModel
         }
 
         private TimeClass _selectedTime;
-        private readonly IEventAggregator _eventAggregator;
 
         public TimeClass SelectedTime
         {
@@ -52,9 +51,10 @@ namespace GoMuscuChrono.ViewModel
             }
         }
 
+        public event EventHandler TimerValueChanged;
+
         public TimeListViewModel()
         {
-            _eventAggregator = ApplicationService.Instance.EventAggregator;
             this.CreateTimeList();
         }
 
@@ -72,7 +72,7 @@ namespace GoMuscuChrono.ViewModel
 
         private void SelectedTimeChanged()
         {
-            _eventAggregator.GetEvent<TimerChangedEvent>().Publish(new TimerChangedEventArgs(this.SelectedTime));
+            TimerValueChanged?.Invoke(this, new TimerChangedEventArgs(this.SelectedTime));
             this.SelectedTime = null;
         }
     }

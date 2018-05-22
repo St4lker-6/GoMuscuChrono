@@ -16,8 +16,6 @@ namespace GoMuscuChrono.View
 		public TimeListView()
 		{
 			InitializeComponent ();
-            this.BindingContext = new TimeListViewModel();
-
         }
 	}
 }

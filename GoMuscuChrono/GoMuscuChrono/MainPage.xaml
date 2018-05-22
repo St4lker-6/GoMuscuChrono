@@ -3,20 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:GoMuscuChrono"
              xmlns:Views ="clr-namespace:GoMuscuChrono.View"
-             x:Class="GoMuscuChrono.MainPage" x:Name="mainPage" >
+             x:Class="GoMuscuChrono.MainPage"
+             x:Name="mainPage" >
 
     <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style x:Key="MyStyle"  TargetType="Views:TimeListView">
-                <Setter Property="IsVisible" Value="False"/>
-
-                <Style.Triggers>
-                    <DataTrigger TargetType="Views:TimeListView" Binding="{Binding DisplayMode}" Value="0">
-                        <Setter Property="IsVisible" Value="True"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </ResourceDictionary>
     </ContentPage.Resources>
     
     <Grid x:Name="myGrid">
@@ -27,7 +17,8 @@
         </Grid.RowDefinitions>
 
         <!--Time selection view-->
-        <Views:TimeListView Grid.Row="1" Style="{x:StaticResource MyStyle}">
+        <Views:TimeListView Grid.Row="1"
+                            BindingContext="{Binding TimeListViewModel}">
             <Views:TimeListView.Style>
                 <Style TargetType="Views:TimeListView">
                     <Setter Property="IsVisible" Value="False"/>
@@ -42,7 +33,8 @@
         </Views:TimeListView>
 
         <!--Timer view-->
-        <Views:ChronoView Grid.Row="1" >
+        <Views:ChronoView Grid.Row="1" 
+                          BindingContext="{Binding ChronoViewModel}">
             <Views:ChronoView.Style>
                 <Style TargetType="Views:ChronoView">
                     <Setter Property="IsVisible" Value="False"/>

@@ -13,8 +13,6 @@ namespace GoMuscuChrono.ViewModel
 {
     public class MainPageViewModel : ViewModelBase
     {
-        private readonly IEventAggregator _eventAggregator;
-
         private DisplayModeEnum _displayMode;
         public DisplayModeEnum DisplayMode
         {
@@ -33,22 +31,62 @@ namespace GoMuscuChrono.ViewModel
             }
         }
 
+        private TimeListViewModel _timeListViewModel;
+        public TimeListViewModel TimeListViewModel
+        {
+
+            get
+            {
+                return _timeListViewModel;
+            }
+            set
+            {
+                if (_timeListViewModel != value)
+                {
+                    _timeListViewModel = value;
+                    this.NotifyPropertyChanged(nameof(TimeListViewModel));
+                }
+            }
+        }
+
+        private ChronoViewModel _chronoViewModel;
+        public ChronoViewModel ChronoViewModel
+        {
+
+            get
+            {
+                return _chronoViewModel;
+            }
+            set
+            {
+                if (_chronoViewModel != value)
+                {
+                    _chronoViewModel = value;
+                    this.NotifyPropertyChanged(nameof(ChronoViewModel));
+                }
+            }
+        }
+
         public MainPageViewModel()
         {
-            _eventAggregator = ApplicationService.Instance.EventAggregator;
-            _eventAggregator.GetEvent<TimerChangedEvent>().Subscribe(TimerChanged);
-            _eventAggregator.GetEvent<TimerElapsedEvent>().Subscribe(TimerElapsed);
+            this.ChronoViewModel = new ChronoViewModel();
+            this.TimeListViewModel = new TimeListViewModel();
+
+            this.ChronoViewModel.TimerStopped += ChronoViewModel_TimerStopped;
+            this.TimeListViewModel.TimerValueChanged += TimeListViewModel_TimerValueChanged;
 
             this.DisplayMode = DisplayModeEnum.TimerSelection;
         }
 
-        private void TimerChanged(TimerChangedEventArgs obj)
+        private void TimeListViewModel_TimerValueChanged(object sender, EventArgs e)
         {
-            this.DisplayMode = DisplayModeEnum.TimerCount;
+            var eventArgs = (TimerChangedEventArgs)e;
 
+            this.DisplayMode = DisplayModeEnum.TimerCount;
+            this.ChronoViewModel.TimerChanged(eventArgs);
         }
 
-        private void TimerElapsed(TimerElapsedEventArgs arg = null)
+        private void ChronoViewModel_TimerStopped(object sender, EventArgs e)
         {
             this.DisplayMode = DisplayModeEnum.TimerSelection;
         }

@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="GoMuscuChrono.View.ChronoView">
+             x:Class="GoMuscuChrono.View.ChronoView"
+             x:Name="chronoView">
     <ContentView.Content>
         <Grid>
             <Grid.RowDefinitions>
@@ -24,8 +25,19 @@
 
                 <Button 
                     Grid.Column="0"
-                    Command="{Binding PauseCommand}"
-                    Text="Pause"/>
+                    Command="{Binding PauseCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Text" Value="Pause"/>
+
+                            <Style.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding Path=BindingContext.TimerPaused, Source={x:Reference chronoView}}" Value="True">
+                                    <Setter Property="Text" Value="Start"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
 
                 <Button 
                     Grid.Column="1"
