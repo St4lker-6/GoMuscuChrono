@@ -5,8 +5,6 @@ using System.Text;
 
 namespace GoMuscuChrono.Model.Events
 {
-    public class TimerElapsedEvent : PubSubEvent<TimerElapsedEventArgs> { }
-
     public class TimerElapsedEventArgs : EventArgs
     {
         public TimerElapsedEventArgs()

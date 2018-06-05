@@ -5,9 +5,6 @@ using System.Text;
 
 namespace GoMuscuChrono.Model.Events
 {
-
-    public class TimerChangedEvent : PubSubEvent<TimerChangedEventArgs> { }
-
     public class TimerChangedEventArgs : EventArgs
     {
         public TimeClass SelectedTime { get; set; }

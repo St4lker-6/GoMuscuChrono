@@ -12,10 +12,14 @@
     <Grid x:Name="myGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="4*"/>
         </Grid.RowDefinitions>
 
+        <Views:SetView Grid.Row="0"
+                       BindingContext="{Binding SetViewModel}">
+            
+        </Views:SetView>
+        
         <!--Time selection view-->
         <Views:TimeListView Grid.Row="1"
                             BindingContext="{Binding TimeListViewModel}">

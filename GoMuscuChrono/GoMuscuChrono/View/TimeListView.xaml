@@ -1,21 +1,40 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
              x:Class="GoMuscuChrono.View.TimeListView">
+    <!--<ContentView.Resources>
+        <Style x:Key="BorderStyle" TargetType="ContentView">
+            -->
+    <!--<Setter Property="BackgroundColor" Value="Red"/>
+            <Setter Property="Padding" Value="3,1,1,3"/>-->
+    <!--
+        </Style>
+    </ContentView.Resources>-->
+
     <ContentView.Content>
-        <ListView 
-                      HasUnevenRows="true"
-                      ItemsSource="{Binding TimeList}"
-                      SelectedItem="{Binding SelectedTime}">
-            <ListView.ItemTemplate>
+
+        <flv:FlowListView FlowColumnCount="2" 
+                          SeparatorVisibility="None" 
+                          HasUnevenRows="False"
+                          BackgroundColor="Red"
+                          FlowItemsSource="{Binding TimeList}"
+                          FlowItemTappedCommand="{Binding SelectedTimeCommand}"
+                          FlowLastTappedItem="{Binding SelectedTime}">
+            <flv:FlowListView.FlowColumnTemplate>
                 <DataTemplate>
-                    <ViewCell >
-                        <Label Text="{Binding Path=DisplayedTime}" 
-                               HorizontalOptions="Center" 
-                               VerticalOptions="Center"/>
-                    </ViewCell >
+                    <Frame OutlineColor="Black" Opacity="1" Padding="0" Margin="0" HasShadow="True" >
+                        <Label 
+                               HorizontalOptions="Fill"  
+                               VerticalOptions="Fill" 
+				               XAlign="Center" 
+                               YAlign="Center" 
+                               Text="{Binding DisplayedTime}"/>
+                    </Frame>
+
+
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </flv:FlowListView.FlowColumnTemplate>
+        </flv:FlowListView>
     </ContentView.Content>
 </ContentView>

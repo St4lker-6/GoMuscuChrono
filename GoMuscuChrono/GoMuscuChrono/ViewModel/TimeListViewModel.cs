@@ -6,11 +6,15 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace GoMuscuChrono.ViewModel
 {
     public class TimeListViewModel : ViewModelBase
     {
+        public ICommand SelectedTimeCommand { get; protected set; }
+
         private ObservableCollection<TimeClass> _timeList;
         public ObservableCollection<TimeClass> TimeList
         {
@@ -29,7 +33,6 @@ namespace GoMuscuChrono.ViewModel
         }
 
         private TimeClass _selectedTime;
-
         public TimeClass SelectedTime
         {
             get
@@ -42,11 +45,6 @@ namespace GoMuscuChrono.ViewModel
                 {
                     _selectedTime = value;
                     this.NotifyPropertyChanged(nameof(this.SelectedTime));
-
-                    if (_selectedTime != null)
-                    {
-                        this.SelectedTimeChanged();
-                    }
                 }
             }
         }
@@ -55,6 +53,8 @@ namespace GoMuscuChrono.ViewModel
 
         public TimeListViewModel()
         {
+            this.SelectedTimeCommand = new Command(this.SelectedTimeChanged);
+
             this.CreateTimeList();
         }
 
@@ -67,13 +67,18 @@ namespace GoMuscuChrono.ViewModel
             this.TimeList.Add(new TimeClass() { CounterTime = new DateTime(1992, 12, 11, 0, 1, 30) });
             this.TimeList.Add(new TimeClass() { CounterTime = new DateTime(1991, 12, 25, 0, 2, 00) });
             this.TimeList.Add(new TimeClass() { CounterTime = new DateTime(1987, 1, 12, 0, 3, 00) });
+            this.TimeList.Add(new TimeClass() { CounterTime = new DateTime(1987, 1, 12, 0, 3, 00) });
+            this.TimeList.Add(new TimeClass() { CounterTime = new DateTime(1987, 1, 12, 0, 3, 00) });
+            this.TimeList.Add(new TimeClass() { CounterTime = new DateTime(1987, 1, 12, 0, 3, 00) });
+            this.TimeList.Add(new TimeClass() { CounterTime = new DateTime(1987, 1, 12, 0, 3, 00) });
+            this.TimeList.Add(new TimeClass() { CounterTime = new DateTime(1987, 1, 12, 0, 3, 00) });
+            this.TimeList.Add(new TimeClass() { CounterTime = new DateTime(1987, 1, 12, 0, 3, 00) });
         }
 
 
         private void SelectedTimeChanged()
         {
             TimerValueChanged?.Invoke(this, new TimerChangedEventArgs(this.SelectedTime));
-            this.SelectedTime = null;
         }
     }
 }

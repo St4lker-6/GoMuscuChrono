@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DLToolkit.Forms.Controls;
+using System;
 using Xamarin.Forms;
 
 namespace GoMuscuChrono
@@ -8,8 +9,7 @@ namespace GoMuscuChrono
 		public App ()
 		{
 			InitializeComponent();
-
-			MainPage = new MainPage();
+            MainPage = new MainPage();
 		}
 
 		protected override void OnStart ()

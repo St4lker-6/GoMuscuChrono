@@ -67,10 +67,28 @@ namespace GoMuscuChrono.ViewModel
             }
         }
 
+        private SetViewModel _setViewModel;
+        public SetViewModel SetViewModel
+        { 
+            get
+            {
+                return _setViewModel;
+            }
+            set
+            {
+                if (_setViewModel != value)
+                {
+                    _setViewModel = value;
+                    this.NotifyPropertyChanged(nameof(SetViewModel));
+                }
+            }
+        }
+
         public MainPageViewModel()
         {
             this.ChronoViewModel = new ChronoViewModel();
             this.TimeListViewModel = new TimeListViewModel();
+            this.SetViewModel = new SetViewModel();
 
             this.ChronoViewModel.TimerStopped += ChronoViewModel_TimerStopped;
             this.TimeListViewModel.TimerValueChanged += TimeListViewModel_TimerValueChanged;
@@ -89,6 +107,7 @@ namespace GoMuscuChrono.ViewModel
         private void ChronoViewModel_TimerStopped(object sender, EventArgs e)
         {
             this.DisplayMode = DisplayModeEnum.TimerSelection;
+            this.SetViewModel.TimerStopped();
         }
     }
 }
